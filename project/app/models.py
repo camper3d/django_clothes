@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Ad(models.Model):
     CONDITION_CHOICES = [
         ('new', 'Новый'),
@@ -19,18 +20,18 @@ class Ad(models.Model):
         return self.title
 
 
-    class ExchangeProposal(models.Model):
-        STATUS_CHOICES = [
-            ('pending', 'ожидает'),
-            ('accepted', 'принята'),
-            ('rejected', 'отклонена'),
-        ]
+class ExchangeProposal(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'ожидает'),
+        ('accepted', 'принята'),
+        ('rejected', 'отклонена'),
+    ]
 
-        ad_sender = models.ForeignKey('Ad', on_delete=models.CASCADE, related_name='sent_proposals')
-        ad_receiver = models.ForeignKey('Ad', on_delete=models.CASCADE, related_name='received_proposals')
-        comment = models.TextField(blank=True)
-        status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-        created_at = models.DateTimeField(auto_now_add=True)
+    ad_sender = models.ForeignKey('Ad', on_delete=models.CASCADE, related_name='sent_proposals')
+    ad_receiver = models.ForeignKey('Ad', on_delete=models.CASCADE, related_name='received_proposals')
+    comment = models.TextField(blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
 
-        def __str__(self):
-            return f'{self.ad_sender.title} -> {self.ad_receiver.title} ({self.status})'
+    def __str__(self):
+        return f'{self.ad_sender.title} -> {self.ad_receiver.title} ({self.status})'
